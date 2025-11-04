@@ -4,7 +4,7 @@ import shutil
 from abc import abstractmethod
 from typing import Generic, TypeVar
 
-from backend.models import __version__
+from backend.models.version import __version__
 from backend.models.name_conventions import METADATA_FILE
 from backend.models.typing import SerializableState
 
@@ -21,6 +21,11 @@ class ModelRegistry(type):
         mcs.registry[name] = cls
         return cls
 
+    def __call__(cls, *args, **kwargs):
+        instance = super().__call__(*args, **kwargs)
+        instance.__version__ = __version__
+        return instance
+
     @classmethod
     def get_model_class(mcs, name):
         return mcs.registry.get(name)
@@ -35,12 +40,13 @@ class BaseModel(metaclass=ModelRegistry):
         """
         Return a serializable dictionary representing the internal state.
         """
-        return dict()
+        return dict(__version__=self.__version__)
 
     def _deserialize(self, state: SerializableState):
         """
         Fill serializable attributes from state dictionary.
         """
+        self.__version__ = state.get("__version__")
         pass
 
     def _save(self, path: str):
@@ -65,7 +71,6 @@ class BaseModel(metaclass=ModelRegistry):
         # Serializable attributes
         metadata = {
             "__name__": self.__class__.__name__,
-            "__version__": __version__,
             "serializable_state": self._serialize(),
         }
         with open(os.path.join(path, METADATA_FILE), "w") as f:
