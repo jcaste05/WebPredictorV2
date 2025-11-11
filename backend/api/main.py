@@ -95,10 +95,9 @@ def custom_redoc():
     resp = get_redoc_html(
         openapi_url=app.openapi_url,
         title=f"{app.title} - ReDoc",
+        redoc_js_url="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js",
     )
     resp.headers["Content-Security-Policy"] = DOCS_CSP
-    if "X-Content-Type-Options" in resp.headers:
-        del resp.headers["X-Content-Type-Options"]
     return resp
 
 
