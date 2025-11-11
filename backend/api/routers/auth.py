@@ -1,11 +1,23 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
+from fastapi_limiter.depends import RateLimiter
 
-from backend.api.config import ACCESS_TOKEN_EXPIRE_MINUTES, SCOPE_IMPLICATIONS, SCOPES
-from backend.api.schemas.auth_schemas import TokenResponse, ScopesResponse
+from backend.api.config import (
+    ACCESS_TOKEN_EXPIRE_MINUTES,
+    DEFAULT_RL,
+    SCOPE_IMPLICATIONS,
+    SCOPES,
+)
+from backend.api.schemas.auth_schemas import ScopesResponse, TokenResponse
 from backend.api.security.auth import authenticate_user, create_access_token
 
-router = APIRouter(prefix="/auth", tags=["auth"])
+router = APIRouter(
+    prefix="/auth",
+    tags=["auth"],
+    dependencies=[
+        Depends(RateLimiter(times=DEFAULT_RL[0], seconds=DEFAULT_RL[1])),
+    ],
+)
 
 login_kwargs = dict(
     response_model=TokenResponse,

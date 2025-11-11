@@ -1,7 +1,9 @@
 import numpy as np
 from fastapi import APIRouter, Depends, Security
+from fastapi_limiter.depends import RateLimiter
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 
+from backend.api.config import DEFAULT_RL
 from backend.api.schemas.tabular_regressor_schemas import (
     AVAILABLE_MODELS,
     TrainPredictMetrics,
@@ -10,12 +12,16 @@ from backend.api.schemas.tabular_regressor_schemas import (
 )
 from backend.api.security.auth import get_current_user
 from backend.api.version import __version__ as api_version
+from backend.db.models import User
 from backend.models.name_conventions import INDEX_COL, PRED_SUFFIX
 from backend.models.version import __version__ as model_version
-from backend.db.models import User
 
 # Router dedicated to tabular regressor operations
-router = APIRouter(prefix="/tabular_regressor", tags=["tabular_regressor"])
+router = APIRouter(
+    prefix="/tabular_regressor",
+    tags=["tabular_regressor"],
+    dependencies=[Depends(RateLimiter(times=DEFAULT_RL[0], seconds=DEFAULT_RL[1]))],
+)
 
 
 def _format_predictions(preds_df):
