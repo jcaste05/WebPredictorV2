@@ -97,7 +97,8 @@ def custom_redoc():
         title=f"{app.title} - ReDoc",
     )
     resp.headers["Content-Security-Policy"] = DOCS_CSP
-    resp.headers.pop("X-Content-Type-Options", None)
+    if "X-Content-Type-Options" in resp.headers:
+        del resp.headers["X-Content-Type-Options"]
     return resp
 
 
