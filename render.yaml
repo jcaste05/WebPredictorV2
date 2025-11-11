@@ -16,3 +16,10 @@ services:
           name: web-redis
           type: redis
           property: connectionString
+    envVarGroups:
+      - name: secrets-prod
+        envVars:
+          - key: API_HOST_SECRET_KEY
+          - key: IP_KEY_SALT
+          - key: USERS_DB_URL
+          - key: ADMIN_PASSWORD
