@@ -21,9 +21,11 @@ def hash_ip(ip: str) -> str:
 async def real_ip(request: Request) -> str:
     ip = ""
     if request.headers.get("x-forwarded-for"):
+        print("DEBUG: x-forwarded-for header found")
         xff = request.headers.get("x-forwarded-for")
         ip = xff.split(",")[0].strip()
     elif request.headers.get("x-real-ip"):
+        print("DEBUG: x-real-ip header found")
         xrip = request.headers.get("x-real-ip")
         ip = xrip.strip()
 
@@ -34,4 +36,5 @@ async def real_ip(request: Request) -> str:
 
     if ip == "":
         ip = "0.0.0.0"
+    print(f"DEBUG: Using hashed IP address {hash_ip(ip)} for rate limiting")
     return hash_ip(ip)

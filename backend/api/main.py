@@ -33,12 +33,20 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="WebPredictorV2 API",
+    title="WebPredictorAPI",
     version=api_version,
     lifespan=lifespan,
     default_response_class=JSONResponse,
     docs_url=None,
     redoc_url=None,
+    contact={
+        "name": "Javier Castellano Soria",
+        "email": "webpredictorapi@example.com",
+    },
+    license_info={
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT",
+    },
 )
 
 
