@@ -2,9 +2,13 @@ envVarGroups:
   - name: secrets-prod
     envVars:
       - key: API_HOST_SECRET_KEY
+        value: null 
       - key: IP_KEY_SALT
+        value: null
       - key: USERS_DB_URL
+        value: null
       - key: ADMIN_PASSWORD
+        value: null
 
 services:
   - type: redis
