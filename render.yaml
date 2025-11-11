@@ -1,9 +1,8 @@
 services:
-  - type: keyvalue
-    name: redis
+  - type: redis
+    name: web-redis
     plan: free
-    allowedIPs:
-      - blueprint
+    ipAllowList: []
 
   - type: web
     name: webpredictor-api
@@ -13,4 +12,7 @@ services:
     dockerContext: ./backend
     envVars:
       - key: REDIS_URL
-        value: redis://redis:6379/0
+        fromService:
+          name: web-redis
+          type: redis
+          property: connectionString
