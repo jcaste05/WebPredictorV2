@@ -19,13 +19,19 @@ def hash_ip(ip: str) -> str:
 
 
 async def real_ip(request: Request) -> str:
-    xff = request.headers.get("x-forwarded-for")
-    if xff:
-        ip_hashed = hash_ip(xff.split(",")[0].strip())
-        return ip_hashed
-    xrip = request.headers.get("x-real-ip")
-    if xrip:
-        ip_hashed = hash_ip(xrip.strip())
-        return ip_hashed
+    ip = ""
+    if request.headers.get("x-forwarded-for"):
+        xff = request.headers.get("x-forwarded-for")
+        ip = xff.split(",")[0].strip()
+    elif request.headers.get("x-real-ip"):
+        xrip = request.headers.get("x-real-ip")
+        ip = xrip.strip()
 
-    return hash_ip(request.client.host)
+    if len(ip) > 100:
+        ip == ""
+    if ip.count(":") == 1 and ip.split(":")[1].isdigit():
+        ip = ip.split(":")[0]
+
+    if ip == "":
+        ip = "0.0.0.0"
+    return hash_ip(ip)

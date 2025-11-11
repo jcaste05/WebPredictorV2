@@ -2,14 +2,18 @@ from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer, SecurityScopes
+from fastapi.security import (
+    OAuth2PasswordBearer,
+    OAuth2PasswordRequestForm,
+    SecurityScopes,
+)
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
 from backend.api.config import (
     ALGORITHM,
-    SCOPES,
     SCOPE_IMPLICATIONS,
+    SCOPES,
     SECRET_KEY,
     access_token_timedelta,
 )
@@ -22,6 +26,9 @@ oauth2_scheme = OAuth2PasswordBearer(
 )
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+PASSWORD_MAX_LEN = 128
+USERNAME_MAX_LEN = 128
 
 
 def _get_user(username: str) -> User | None:
@@ -98,3 +105,19 @@ def get_current_user(
     if user is None:
         raise credentials_exception
     return user
+
+
+def validate_credentials(form: OAuth2PasswordRequestForm = Depends()):
+    username = form.username.strip()
+    password = form.password
+
+    # Username checks
+    if not len(username) <= USERNAME_MAX_LEN:
+        raise HTTPException(status_code=422, detail="Invalid username length")
+
+    # Password checks
+    if not len(password) <= PASSWORD_MAX_LEN:
+        raise HTTPException(status_code=422, detail="Invalid password length")
+
+    scopes = list(form.scopes)
+    return username, password, scopes

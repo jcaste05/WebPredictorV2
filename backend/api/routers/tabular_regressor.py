@@ -91,4 +91,4 @@ available_models_kwargs = dict(
 
 @router.post("/available_models", **available_models_kwargs)
 def available_models():
-    return {"available_models": list(AVAILABLE_MODELS.keys())}
+    return {"available_models": AVAILABLE_MODELS}

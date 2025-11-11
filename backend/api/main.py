@@ -60,7 +60,13 @@ async def add_security_headers(request: Request, call_next):
     return response
 
 
-@app.get("/docs", include_in_schema=False)
+docs_kwargs = dict(
+    include_in_schema=False,
+    dependencies=[Depends(RateLimiter(times=DEFAULT_RL[0], seconds=DEFAULT_RL[1]))],
+)
+
+
+@app.get("/docs", **docs_kwargs)
 def custom_swagger_ui():
     resp = get_swagger_ui_html(
         openapi_url=app.openapi_url,
@@ -70,7 +76,13 @@ def custom_swagger_ui():
     return resp
 
 
-@app.get("/redoc", include_in_schema=False)
+redoc_kwargs = dict(
+    include_in_schema=False,
+    dependencies=[Depends(RateLimiter(times=DEFAULT_RL[0], seconds=DEFAULT_RL[1]))],
+)
+
+
+@app.get("/redoc", **redoc_kwargs)
 def custom_redoc():
     resp = get_redoc_html(
         openapi_url=app.openapi_url,

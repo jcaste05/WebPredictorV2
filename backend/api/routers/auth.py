@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm
 from fastapi_limiter.depends import RateLimiter
 
 from backend.api.config import (
@@ -9,7 +8,11 @@ from backend.api.config import (
     SCOPES,
 )
 from backend.api.schemas.auth_schemas import ScopesResponse, TokenResponse
-from backend.api.security.auth import authenticate_user, create_access_token
+from backend.api.security.auth import (
+    authenticate_user,
+    create_access_token,
+    validate_credentials,
+)
 
 router = APIRouter(
     prefix="/auth",
@@ -26,10 +29,8 @@ login_kwargs = dict(
 
 
 @router.post("/login", **login_kwargs)
-def login(form_data: OAuth2PasswordRequestForm = Depends()):
-    username = form_data.username
-    password = form_data.password
-    scopes = list(form_data.scopes)
+def login(creds=Depends(validate_credentials)):
+    username, password, scopes = creds
 
     user = authenticate_user(username, password)
     if not user:
