@@ -10,14 +10,16 @@ envVarGroups:
       - key: ADMIN_PASSWORD
         value: null
 
-services:
-  - type: redis
-    name: web-redis
+database:
+  - name: webusers-postgres
+    postgresMajorVersion: 16
+    databaseName: webusers
     plan: free
     ipAllowList: []
 
-  - type: postgres
-    name: webusers-postgres
+services:
+  - type: redis
+    name: web-redis
     plan: free
     ipAllowList: []
 
@@ -34,8 +36,7 @@ services:
           type: redis
           property: connectionString
       - key: USERS_DB_URL
-        fromService:
+        fromDatabase:
           name: webusers-postgres
-          type: postgres
           property: connectionString
       - fromGroup: secrets-prod
