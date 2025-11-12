@@ -6,10 +6,15 @@ from sqlalchemy.orm import sessionmaker, DeclarativeBase
 # File-based SQLite for local dev
 USERS_DB_URL = os.getenv("USERS_DB_URL")
 
-engine = create_engine(
-    USERS_DB_URL,
-    connect_args={"check_same_thread": False},  # Needed for SQLite with multithreaded ASGI
-)
+if "sqlite://" in USERS_DB_URL:
+    print("INFO: Using SQLite database for users.")
+    engine = create_engine(
+        USERS_DB_URL,
+        connect_args={"check_same_thread": False},  # Needed for SQLite with multithreaded ASGI
+    )
+elif "postgres" in USERS_DB_URL:
+    print("INFO: Using PostgreSQL database for users.")
+    engine = create_engine(USERS_DB_URL, pool_pre_ping=True)
 
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 

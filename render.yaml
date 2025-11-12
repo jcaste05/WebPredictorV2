@@ -16,6 +16,11 @@ services:
     plan: free
     ipAllowList: []
 
+  - type: postgres
+    name: webusers-postgres
+    plan: free
+    ipAllowList: []
+
   - type: web
     name: webpredictor-api
     env: docker
@@ -27,5 +32,10 @@ services:
         fromService:
           name: web-redis
           type: redis
+          property: connectionString
+      - key: USERS_DB_URL
+        fromService:
+          name: webusers-postgres
+          type: postgres
           property: connectionString
       - fromGroup: secrets-prod
