@@ -10,7 +10,7 @@ envVarGroups:
       - key: ADMIN_PASSWORD
         value: null
 
-database:
+databases:
   - name: webusers-postgres
     postgresMajorVersion: 16
     databaseName: webusers
