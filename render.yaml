@@ -2,13 +2,13 @@ envVarGroups:
   - name: secrets-prod
     envVars:
       - key: API_HOST_SECRET_KEY
-        value: null 
+        sync: false 
       - key: IP_KEY_SALT
-        value: null
+        sync: false
       - key: USERS_DB_URL
-        value: null
+        sync: false
       - key: ADMIN_PASSWORD
-        value: null
+        sync: false
 
 databases:
   - name: webusers-postgres
