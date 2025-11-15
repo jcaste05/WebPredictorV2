@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WebPredictor Frontend</title>
+  <!-- Strict CSP (adjust connect-src for API domain in production) -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self';" />
+  <link rel="stylesheet" href="frontend/styles/variables.css" />
+  <link rel="stylesheet" href="frontend/styles/main.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>WebPredictor</h1>
+    <nav class="nav" id="nav-bar" aria-label="Main navigation">
+      <button id="nav-login" class="nav-btn" data-view="login-view">Login</button>
+      <button id="nav-tabular" class="nav-btn" data-view="tabular-view" disabled>Tabular</button>
+      <button id="nav-logout" class="nav-btn" data-action="logout" disabled>Logout</button>
+    </nav>
+  </header>
+
+  <main class="container" id="app-main" tabindex="-1">
+    <!-- Global messages -->
+    <div id="global-message" class="message" aria-live="polite"></div>
+
+    <!-- Login View -->
+    <section id="login-view" class="view active" aria-labelledby="login-title">
+      <h2 id="login-title">Login</h2>
+      <form id="login-form" autocomplete="off">
+        <div class="form-group">
+          <label for="login-username">Username</label>
+          <input type="text" id="login-username" name="username" required minlength="3" autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" name="password" required minlength="4" autocomplete="current-password" />
+        </div>
+        <div class="form-group">
+          <label for="login-scopes">Scopes (optional, space separated)</label>
+          <input type="text" id="login-scopes" name="scopes" placeholder="client" />
+        </div>
+        <button type="submit" class="btn primary">Sign in</button>
+      </form>
+      <details id="scopes-info">
+        <summary>Available scopes</summary>
+        <ul id="scopes-list"></ul>
+      </details>
+    </section>
+
+    <!-- Tabular View -->
+    <section id="tabular-view" class="view" aria-labelledby="tabular-title">
+      <h2 id="tabular-title">Tabular Regressor</h2>
+      <form id="tabular-form" autocomplete="off">
+        <fieldset>
+          <legend>Configuration</legend>
+          <div class="form-group">
+            <label for="model-type">Model</label>
+            <select id="model-type" name="model_type" required></select>
+          </div>
+          <div class="form-group">
+            <label for="target-columns">Target columns (comma separated)</label>
+            <input type="text" id="target-columns" name="target_columns" placeholder="target" required />
+          </div>
+          <div class="form-group">
+            <label for="feature-columns">Feature columns (optional, comma separated)</label>
+            <input type="text" id="feature-columns" name="feature_columns" placeholder="feature1,feature2" />
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>CSV Data</legend>
+          <div class="form-group">
+            <label for="train-csv">Train CSV</label>
+            <textarea id="train-csv" name="train_csv" rows="6" placeholder="index,feature1,feature2,target\n0,1.0,2.0,5.0\n1,2.0,1.0,4.5" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="predict-csv">Predict CSV</label>
+            <textarea id="predict-csv" name="predict_csv" rows="6" placeholder="index,feature1,feature2\n0,1.5,2.5\n1,2.0,2.0" required></textarea>
+          </div>
+        </fieldset>
+        <button type="submit" class="btn primary">Train and Predict</button>
+      </form>
+
+      <div id="results" class="results" hidden>
+        <h3>Results</h3>
+        <div id="metrics"></div>
+        <div id="predictions"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>© 2025 WebPredictor. v<span id="api-version">?</span> / Model v<span id="model-version">?</span></small>
+  </footer>
+
+  <script type="module" src="/frontend/js/dom.js"></script>
+  <script type="module" src="/frontend/js/api.js"></script>
+  <script type="module" src="/frontend/js/auth.js"></script>
+  <script type="module" src="/frontend/js/tabular_regressor.js"></script>
+</body>
+</html>

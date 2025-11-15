@@ -1,9 +1,11 @@
+import os
 from contextlib import asynccontextmanager
 
 import redis.asyncio as redis
 from fastapi import Depends, FastAPI, Request
 from fastapi.openapi.docs import get_redoc_html, get_swagger_ui_html
-from fastapi.responses import Response, JSONResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import Response, JSONResponse, FileResponse
 from fastapi_limiter import FastAPILimiter
 from fastapi_limiter.depends import RateLimiter
 
@@ -49,6 +51,10 @@ app = FastAPI(
     },
 )
 
+# Mount frontend static files
+frontend_dir = os.path.join(os.path.dirname(__file__), "../../frontend")
+frontend_dir = os.path.abspath(frontend_dir)
+app.mount("/frontend", StaticFiles(directory=frontend_dir, html=True), name="frontend")
 
 # Middleware to add security headers to each response
 @app.middleware("http")
@@ -114,7 +120,7 @@ welcome_kwargs = dict(
 )
 
 
-@app.get("/", **welcome_kwargs)
+@app.get("/health", **welcome_kwargs)
 def welcome_root() -> WelcomeResponse:
     resource_paths = sorted(
         {
@@ -138,3 +144,9 @@ def welcome_root() -> WelcomeResponse:
         resources=resource_paths,
         links=links,
     )
+
+
+@app.get("/")
+async def serve_frontend():
+    print(frontend_dir)
+    return FileResponse(os.path.join(frontend_dir, "index.html"))
