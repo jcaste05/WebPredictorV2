@@ -10,8 +10,8 @@ async function renderVersions() {
     const v = await getApiVersions();
     const apiVersionEl = document.getElementById('api-version');
     const modelVersionEl = document.getElementById('model-version');
-    if (apiVersionEl) apiVersionEl.textContent = v.api;
-    if (modelVersionEl) modelVersionEl.textContent = v.model;
+    if (apiVersionEl) apiVersionEl.textContent = v.api_version;
+    if (modelVersionEl) modelVersionEl.textContent = v.model_version;
   } catch (_) { /* ignore */ }
 }
 
