@@ -1,5 +1,19 @@
 import { $, activateView, setMessage } from './dom.js';
-import { login, loadScopes, getToken, clearAuth, isAuthenticated } from './api.js';
+import { login, loadScopes, getToken, clearAuth, isAuthenticated, getApiVersions } from './api.js';
+import { WEB_VERSION } from './config.js';
+
+async function renderVersions() {
+  const webVersionEl = document.getElementById('web-version');
+  if (webVersionEl) webVersionEl.textContent = WEB_VERSION;
+  // Get API and model versions
+  try {
+    const v = await getApiVersions();
+    const apiVersionEl = document.getElementById('api-version');
+    const modelVersionEl = document.getElementById('model-version');
+    if (apiVersionEl) apiVersionEl.textContent = v.api;
+    if (modelVersionEl) modelVersionEl.textContent = v.model;
+  } catch (_) { /* ignore */ }
+}
 
 function updateNav() {
   const authed = isAuthenticated();
@@ -59,10 +73,12 @@ function initNav() {
   });
 }
 
+
 export function initAuth() {
   initLoginForm();
   initNav();
   loadAndRenderScopes();
+  renderVersions();
   updateNav();
 }
 

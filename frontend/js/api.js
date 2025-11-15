@@ -78,3 +78,7 @@ export async function loadAvailableModels() {
 export async function trainPredict(payload) {
   return apiFetch('/tabular_regressor/train_predict', { method: 'POST', body: JSON.stringify(payload) });
 }
+
+export async function getApiVersions() {
+  return apiFetch('/health', { method: 'GET' });
+}
