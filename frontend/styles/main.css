@@ -34,6 +34,17 @@ h1,h2,h3,h4 { font-weight: 600; }
 .nav-btn:hover:not(:disabled) { background: var(--color-primary); }
 .nav-btn:disabled { opacity: .35; cursor: not-allowed; }
 
+.nav-link {
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.nav-link:hover {
+  color: var(--color-hover-text);
+  text-decoration: underline;
+}
+
 .container {
   width: 100%;
   max-width: var(--max-width);

@@ -35,7 +35,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="WebPredictorAPI",
+    title="WebPredictor - API",
     version=api_version,
     lifespan=lifespan,
     default_response_class=JSONResponse,
@@ -74,6 +74,11 @@ async def add_security_headers(request: Request, call_next):
     return response
 
 
+@app.get("/favicon.ico")
+async def favicon():
+    return FileResponse(f"{frontend_dir}/favicon.png")
+
+
 docs_kwargs = dict(
     include_in_schema=False,
     dependencies=[Depends(RateLimiter(times=DEFAULT_RL[0], seconds=DEFAULT_RL[1]))],
@@ -85,6 +90,7 @@ def custom_swagger_ui():
     resp = get_swagger_ui_html(
         openapi_url=app.openapi_url,
         title=f"{app.title} - Swagger UI",
+        swagger_favicon_url=f"/frontend/favicon.png",
     )
     resp.headers["Content-Security-Policy"] = DOCS_CSP
     return resp
@@ -102,6 +108,7 @@ def custom_redoc():
         openapi_url=app.openapi_url,
         title=f"{app.title} - ReDoc",
         redoc_js_url="https://cdn.jsdelivr.net/npm/redoc@latest/bundles/redoc.standalone.js",
+        redoc_favicon_url=f"/frontend/favicon.png",
     )
     resp.headers["Content-Security-Policy"] = DOCS_CSP
     return resp

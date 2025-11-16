@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WebPredictor Frontend</title>
+  <title>WebPredictor</title>
   <!-- Strict CSP (adjust connect-src for API domain in production) -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self';" />
   <link rel="stylesheet" href="frontend/styles/variables.css" />
@@ -16,6 +16,8 @@
       <button id="nav-login" class="nav-btn" data-view="login-view">Login</button>
       <button id="nav-tabular" class="nav-btn" data-view="tabular-view" disabled>Tabular</button>
       <button id="nav-logout" class="nav-btn" data-action="logout" disabled>Logout</button>
+      <a href="/docs" class="nav-link" target="_blank" rel="noopener" aria-label="Open interactive API docs">Docs</a>
+      <a href="/redoc" class="nav-link" target="_blank" rel="noopener" aria-label="Open ReDoc documentation">ReDoc</a>
     </nav>
   </header>
 
@@ -93,6 +95,8 @@
       © 2025 WebPredictor. Web v<span id="web-version">?</span> /
       API v<span id="api-version">?</span> /
       Model v<span id="model-version">?</span>
+      · <a href="/docs" class="nav-link" target="_blank" rel="noopener">Docs</a>
+      · <a href="/redoc" class="nav-link" target="_blank" rel="noopener">ReDoc</a>
     </small>
   </footer>
 
