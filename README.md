@@ -78,7 +78,7 @@ Prerequisites:
 * Python 3.10+
 * Redis server running locally (`redis://localhost:6379/0` or Docker equivalent)
 
-Environment setup (Windows CMD style as per `.env` example):
+Environment setup (Windows CMD style):
 ```
 set API_HOST_SECRET_KEY=changeme
 set IP_KEY_SALT=changeme
@@ -92,6 +92,11 @@ python backend/db/dev_init_db.py
 uvicorn backend.api.main:app --reload --port 8000
 ```
 Visit: `http://localhost:8000/` (frontend), plus `/docs` and `/redoc`.
+
+---
+
+## Pytest
+To test the code using pytest, you can run the pytest workflow.
 
 ---
 
