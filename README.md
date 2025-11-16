@@ -68,6 +68,7 @@ Data Stores:
 ### 1. Render (Managed Hosting)
 * Uses `render.yaml` as a blueprint.
 * Accessible at: `https://webpredictor-api.onrender.com`
+* Contact me for credentials.
 * Free tier limitations may apply (cold starts, resource caps).
 * Built automatically from the repository; environment variables configured in Render dashboard.
 
