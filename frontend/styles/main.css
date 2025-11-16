@@ -102,3 +102,12 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--color-prima
   .nav-btn { font-size: .7rem; }
   textarea { font-size: .75rem; }
 }
+
+
+.app-header,
+.container,
+.footer {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 16px;
+}
