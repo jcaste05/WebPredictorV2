@@ -1,7 +1,7 @@
-from typing import Dict, List, Optional, Union, Any
+from typing import Any, Dict, List, Optional, Union
 
 import pandas as pd
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import Lasso, LinearRegression, Ridge
 
@@ -32,10 +32,9 @@ AVAILABLE_MODELS = list(str_to_sk_model.keys())
 class DataRow(BaseModel):
     """Schema for a single row of tabular data."""
 
-    index: Union[int, str]
+    model_config = ConfigDict(extra="allow")
 
-    class Config:
-        extra = "allow"
+    index: Union[int, str]
 
     @field_validator("index")
     @classmethod
