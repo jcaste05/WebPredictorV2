@@ -28,7 +28,6 @@ services:
     env: docker
     plan: free
     dockerfilePath: ./backend/Dockerfile
-    context: .
     envVars:
       - key: REDIS_URL
         fromService:
